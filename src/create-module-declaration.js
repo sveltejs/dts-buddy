@@ -246,7 +246,7 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 				walk(module.ast, (node) => {
 					if (is_reference(node) && ts.isQualifiedName(node.parent)) {
 						const binding = module.import_all.get(node.getText(module.ast));
-						if (binding) {
+						if (binding && !binding.external) {
 							result.remove(node.pos, result.original.indexOf('.', node.end) + 1);
 							const declaration = bundle
 								.get(binding.id)

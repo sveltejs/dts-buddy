@@ -1,8 +1,14 @@
 {
 	"version": 3,
 	"file": "index.d.ts",
-	"names": [],
-	"sources": [],
-	"sourcesContent": [],
-	"mappings": ""
+	"names": [
+		"Params"
+	],
+	"sources": [
+		"../input/index.ts"
+	],
+	"sourcesContent": [
+		null
+	],
+	"mappings": ";;aAEYA,MAAMA"
 }

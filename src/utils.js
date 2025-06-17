@@ -1,4 +1,4 @@
-/** @import { Binding, Declaration, Module, Namespace } from './types' */
+/** @import { Declaration, Module, Namespace } from './types' */
 import fs from 'node:fs';
 import path from 'node:path';
 import { globSync } from 'tinyglobby';
@@ -447,10 +447,12 @@ export function get_dts(file, created, resolve, options) {
 						current.references.add(name);
 
 						if (name !== declaration.name) {
+							const import_all = module.import_all.get(name);
+
 							// If this references an import * as X statement, we add a dependency to Y of the X.Y access
-							if (module.import_all.has(name) && ts.isQualifiedName(node.parent)) {
+							if (import_all && !import_all.external && ts.isQualifiedName(node.parent)) {
 								declaration.dependencies.push({
-									module: /** @type {Binding} */ (module.import_all.get(name)).id,
+									module: import_all.id,
 									name: node.parent.right.getText(module.ast)
 								});
 							} else {
