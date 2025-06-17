@@ -10,6 +10,7 @@
 		"target": "esnext",
 		"moduleResolution": "bundler",
 		"paths": {
+			"@/*": ["./samples/path-config/input/*"],
 			"#lib": ["./samples/path-config/input/lib.d.ts"]
 		}
 	},
