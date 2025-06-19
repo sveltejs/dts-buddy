@@ -198,7 +198,7 @@ export async function createBundle(options) {
 		/** @type {Set<string>} */
 		const ambient_modules = new Set();
 
-		/** @type {Set<string>} */
+		/** @type {Set<{ id: string, ts_ignore: string | undefined }>} */
 		const external_ambient_modules = new Set();
 
 		let first = true;
@@ -237,7 +237,7 @@ export async function createBundle(options) {
 			all_mappings.set(id, mappings);
 			for (const dep of ambient) {
 				if (dep.external) {
-					external_ambient_modules.add(dep.id);
+					external_ambient_modules.add({ id: dep.id, ts_ignore: dep.ts_ignore });
 				} else {
 					ambient_modules.add(dep.id);
 				}
@@ -268,7 +268,14 @@ export async function createBundle(options) {
 
 		if (external_ambient_modules.size > 0) {
 			const imports = Array.from(external_ambient_modules)
-				.map((id) => `/// <reference types="${id}" />`)
+				.map(({ id, ts_ignore }) => {
+					let content = '';
+					if (ts_ignore !== undefined) {
+						content += `/** @ts-ignore ${ts_ignore} */\n`;
+					}
+					content += `/// <reference types="${id}" />`;
+					return content;
+				})
 				.join('\n');
 
 			types = `${imports}\n\n${types}`;

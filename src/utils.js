@@ -231,6 +231,33 @@ export function get_dts(file, created, resolve, options) {
 
 	/** @param {ts.Node} node */
 	function scan(node) {
+		// TS >=5.5 tries to inline JSDoc import declarations, but if TS is older or
+		// if the module can't be resolved, the JSDoc will be preserved.
+		// However, the JSDoc import declaration doesn't work in a .ts file, so we
+		// need to convert it to a regular import.
+		const jsdoc = get_jsdoc(node);
+		let cursor = 0;
+		jsdoc?.forEach((doc, i) => {
+			for (const tag of doc.tags ?? []) {
+				if (!ts.isJSDocImportTag(tag)) continue;
+
+				const import_statement_jsdoc = jsdoc.slice(cursor, i);
+
+				scan(
+					/** @type {ts.Node} */ ({
+						...tag,
+						kind: 272,
+						jsDoc: import_statement_jsdoc.length ? import_statement_jsdoc : undefined
+					})
+				);
+				cursor = i + 1;
+				/** @type {ts.Node & { jsDoc?: ts.JSDoc[] }} */ (node).jsDoc =
+					/** @type {ts.Node & { jsDoc?: ts.JSDoc[] }} */ (node).jsDoc?.slice(cursor);
+
+				// TODO: after modifying `node.jsDoc`, we should remove the import statements and ts-ignores from `module.dts` itself
+			}
+		});
+
 		// follow imports
 		if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
 			if (node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
@@ -245,6 +272,20 @@ export function get_dts(file, created, resolve, options) {
 				}
 
 				if (ts.isImportDeclaration(node)) {
+					/** @type {string | undefined} */
+					let ts_ignore;
+
+					// This only works if the comment is above the start of declaration.
+					// It doesn't work if it is inserted in the middle of a statement.
+					const jsdoc = get_jsdoc(node);
+					for (const doc of jsdoc ?? []) {
+						for (const tag of doc.tags ?? []) {
+							if (tag.tagName.escapedText === 'ts-ignore') {
+								ts_ignore = tag.comment?.toString() ?? '';
+							}
+						}
+					}
+
 					if (node.importClause) {
 						// `import foo`
 						if (node.importClause.name) {
@@ -252,7 +293,8 @@ export function get_dts(file, created, resolve, options) {
 							module.imports.set(name, {
 								id,
 								external,
-								name: 'default'
+								name: 'default',
+								ts_ignore
 							});
 						} else if (node.importClause.namedBindings) {
 							// `import * as foo`
@@ -261,7 +303,8 @@ export function get_dts(file, created, resolve, options) {
 								module.import_all.set(name, {
 									id,
 									external,
-									name
+									name,
+									ts_ignore
 								});
 							}
 
@@ -273,14 +316,15 @@ export function get_dts(file, created, resolve, options) {
 									module.imports.set(local, {
 										id,
 										external,
-										name: specifier.propertyName?.getText(module.ast) ?? local
+										name: specifier.propertyName?.getText(module.ast) ?? local,
+										ts_ignore
 									});
 								});
 							}
 						}
 					} else {
 						// assume this is an ambient module
-						module.ambient_imports.push({ id, external });
+						module.ambient_imports.push({ id, external, ts_ignore });
 					}
 				}
 

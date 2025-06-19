@@ -13,5 +13,5 @@
 			"#lib": ["./samples/path-config/input/lib.d.ts"]
 		}
 	},
-	"exclude": ["**/actual/"]
+	"exclude": ["**/actual/", "**/output/"]
 }

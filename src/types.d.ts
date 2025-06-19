@@ -27,17 +27,20 @@ interface Declaration {
 	 * Only applies to default imports from external modules
 	 */
 	preferred_alias: string;
+	ts_ignore?: string;
 }
 
 interface Binding {
 	id: string;
 	external: boolean;
 	name: string;
+	ts_ignore?: string;
 }
 
 interface ModuleReference {
 	id: string;
 	external: boolean;
+	ts_ignore?: string;
 }
 
 interface Module {

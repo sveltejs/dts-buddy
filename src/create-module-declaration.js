@@ -204,20 +204,30 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 		for (const id in external_imports) {
 			const specifiers = [];
 
+			let ts_ignore;
+
 			for (const name in external_imports[id]) {
 				const declaration = external_imports[id][name];
 				if (declaration.included) {
+					ts_ignore ??= declaration.ts_ignore;
 					specifiers.push(name === declaration.alias ? name : `${name} as ${declaration.alias}`);
 				}
 			}
 
 			if (specifiers.length > 0) {
+				if (ts_ignore !== undefined) {
+					content += `\n\t/** @ts-ignore ${ts_ignore} */`;
+				}
 				content += `\n\timport type { ${specifiers.join(', ')} } from '${id}';`;
 			}
 		}
 
 		for (const id in external_import_alls) {
 			for (const name in external_import_alls[id]) {
+				const declaration = external_import_alls[id][name];
+				if (declaration.ts_ignore !== undefined) {
+					content += `\n\t/** @ts-ignore ${declaration.ts_ignore} */`;
+				}
 				content += `\n\timport * as ${name} from '${id}';`; // TODO could this have been aliased?
 			}
 		}
@@ -559,6 +569,7 @@ function create_external_declaration(binding, alias) {
 		external: true,
 		included: false,
 		dependencies: [],
-		preferred_alias: alias
+		preferred_alias: alias,
+		ts_ignore: binding.ts_ignore
 	};
 }
