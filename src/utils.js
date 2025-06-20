@@ -93,6 +93,12 @@ export function clean_jsdoc(node, code) {
 			let should_keep = !!jsDoc.comment;
 
 			jsDoc.tags?.forEach((tag) => {
+				// @ts-ignore if we've set this ourselves, it means we need to remove the jsdoc
+				if (tag.remove) {
+					code.remove(tag.pos, tag.end);
+					return;
+				}
+
 				const type = /** @type {string} */ (tag.tagName.escapedText);
 
 				// @ts-ignore
@@ -242,19 +248,13 @@ export function get_dts(file, created, resolve, options) {
 				if (!ts.isJSDocImportTag(tag)) continue;
 
 				const import_statement_jsdoc = jsdoc.slice(cursor, i);
-
-				scan(
-					/** @type {ts.Node} */ ({
-						...tag,
-						kind: 272,
-						jsDoc: import_statement_jsdoc.length ? import_statement_jsdoc : undefined
-					})
-				);
+				const import_statement_node = /** @type {ts.Node} */ ({
+					...tag,
+					kind: 272,
+					jsDoc: import_statement_jsdoc.length ? import_statement_jsdoc : undefined
+				});
+				scan(import_statement_node);
 				cursor = i + 1;
-				/** @type {ts.Node & { jsDoc?: ts.JSDoc[] }} */ (node).jsDoc =
-					/** @type {ts.Node & { jsDoc?: ts.JSDoc[] }} */ (node).jsDoc?.slice(cursor);
-
-				// TODO: after modifying `node.jsDoc`, we should remove the import statements and ts-ignores from `module.dts` itself
 			}
 		});
 
@@ -282,6 +282,8 @@ export function get_dts(file, created, resolve, options) {
 						for (const tag of doc.tags ?? []) {
 							if (tag.tagName.escapedText === 'ts-ignore') {
 								ts_ignore = tag.comment?.toString() ?? '';
+								// @ts-ignore we set this so that it's cleaned up later in `clean_jsdoc`
+								tag.remove = true;
 							}
 						}
 					}
@@ -529,6 +531,8 @@ export function get_dts(file, created, resolve, options) {
 	}
 
 	ast.statements.forEach(scan);
+
+	console.log(module.dts);
 
 	for (const name of module.references) {
 		if (!module.declarations.has(name) && !module.imports.has(name)) {
