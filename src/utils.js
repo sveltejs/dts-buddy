@@ -275,14 +275,14 @@ export function get_dts(file, created, resolve, options) {
 					/** @type {string | undefined} */
 					let ts_ignore;
 
-					// This only works if the comment is above the start of declaration.
+					// We can only detect the jsdoc comment if it is above the start of the declaration.
 					// It doesn't work if it is inserted in the middle of a statement.
 					const jsdoc = get_jsdoc(node);
 					for (const doc of jsdoc ?? []) {
 						for (const tag of doc.tags ?? []) {
 							if (tag.tagName.escapedText === 'ts-ignore') {
 								ts_ignore = tag.comment?.toString() ?? '';
-								// @ts-ignore we set this so that it's cleaned up later in `clean_jsdoc`
+								// @ts-ignore we want to cleanup this comment later because we're going to add it when we add the imports ourselves
 								tag.remove = true;
 							}
 						}
