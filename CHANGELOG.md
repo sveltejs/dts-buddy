@@ -1,5 +1,15 @@
 # dts-buddy changelog
 
+## 0.7.0
+
+### Minor Changes
+
+- 743b38d: feat: TypeScript 5.9 support
+
+### Patch Changes
+
+- 8dafc02: chore: update package URL
+
 ## 0.6.2
 
 ### Patch Changes
