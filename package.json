@@ -23,7 +23,7 @@
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.28.1",
-		"@types/node": "^20.7.2",
+		"@types/node": "^24.1.0",
 		"@types/semver": "^7.5.3",
 		"prettier": "^3.0.3",
 		"semver": "^7.5.4",
