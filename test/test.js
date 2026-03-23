@@ -52,7 +52,9 @@ for (const sample of fs.readdirSync('test/samples')) {
 		let output_dir = 'output';
 		for (const candidate of fs.readdirSync(dir)) {
 			if (!candidate.startsWith('output ')) continue;
-			const range = candidate.slice(output_dir.length + 1);
+			// only Windows doesn't support '||' in directory names, so we replace
+			// ' or ' with ' || ' to match the semver range syntax
+			const range = candidate.slice(output_dir.length + 1).replaceAll(' or ', ' || ');
 
 			if (semver.satisfies(ts.version.split('-')[0], range)) {
 				output_dir = candidate;
