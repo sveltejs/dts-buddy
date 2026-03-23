@@ -6,12 +6,13 @@
 		"declarationDir": "types",
 		"declarationMap": true,
 		"emitDeclarationOnly": true,
-		"module": "esnext",
 		"target": "esnext",
 		"moduleResolution": "bundler",
 		"paths": {
 			"#lib": ["./samples/path-config/input/lib.d.ts"]
-		}
+		},
+		"rootDir": "..",
+		"types": ["node"]
 	},
 	"exclude": ["**/actual/"]
 }

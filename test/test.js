@@ -52,7 +52,7 @@ for (const sample of fs.readdirSync('test/samples')) {
 		let output_dir = 'output';
 		for (const candidate of fs.readdirSync(dir)) {
 			if (!candidate.startsWith('output ')) continue;
-			const range = candidate.slice(7);
+			const range = candidate.slice(output_dir.length + 1);
 
 			if (semver.satisfies(ts.version.split('-')[0], range)) {
 				output_dir = candidate;
