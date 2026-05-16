@@ -19,6 +19,18 @@ export class FooBar {
 	constructor() {
 		/** @internal */
 		// @ts-ignore
-		this._ = ''
+		this._ = '';
+	}
+
+	/** @internal */
+	get _baz() {
+		// @ts-ignore
+		return this._;
+	}
+
+	/** @internal * */
+	set _baz(b: string | undefined) {
+		// @ts-ignore
+		this._ = b;
 	}
 }

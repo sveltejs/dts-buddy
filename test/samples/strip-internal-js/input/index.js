@@ -23,4 +23,18 @@ export class Foo {
 
 		this.baz = baz;
 	}
+
+	/** @internal */
+	get _baz() {
+		return this._;
+	}
+
+	/**
+	 * @internal
+	 * @param {string | undefined} b
+	 */
+	set _baz(b) {
+		// @ts-ignore
+		this._ = b;
+	}
 }

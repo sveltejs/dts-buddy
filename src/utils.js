@@ -602,6 +602,8 @@ export function is_reference(node, include_declarations = false) {
 export function is_property(node) {
 	if (ts.isPropertySignature(node)) return true;
 	if (ts.isPropertyDeclaration(node)) return true;
+	if (ts.isGetAccessorDeclaration(node)) return true;
+	if (ts.isSetAccessorDeclaration(node)) return true;
 	return false;
 }
 
