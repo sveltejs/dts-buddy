@@ -8,6 +8,7 @@ import {
 	get_dts,
 	is_declaration,
 	is_internal,
+	is_property,
 	is_reference,
 	resolve_dts,
 	walk
@@ -367,7 +368,7 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 				}
 
 				walk(node, (node) => {
-					if (ts.isPropertySignature(node) && is_internal(node) && options.stripInternal) {
+					if (options.stripInternal && is_internal(node) && is_property(node)) {
 						result.remove(node.pos, node.end);
 						return false;
 					}

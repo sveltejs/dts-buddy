@@ -2,16 +2,13 @@
 	"version": 3,
 	"file": "index.d.ts",
 	"names": [
-		"FooBar",
 		"Foo"
 	],
 	"sources": [
-		"../input/index.ts",
-		"../input/others.d.ts"
+		"../input/index.js"
 	],
 	"sourcesContent": [
-		null,
 		null
 	],
-	"mappings": ";cAOaA,MAAMA;;;;;kBCLFC,GAAGA"
+	"mappings": ";cAAaA,GAAGA"
 }
