@@ -1,0 +1,15 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"Schema",
+		"Test"
+	],
+	"sources": [
+		"../input/index.js"
+	],
+	"sourcesContent": [
+		null
+	],
+	"mappings": ";;cAEaA,MAAMA;aAGkBC,IAAIA"
+}
