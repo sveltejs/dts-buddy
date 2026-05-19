@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"esModuleInterop": true
+	},
+	"include": ["./types/index.d.ts"],
+  // we need this empty array or tsc will exclude the `types` directory because
+  // it's gitignored
+	"exclude": [""]
+}

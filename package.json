@@ -33,7 +33,7 @@
 	"scripts": {
 		"changeset:version": "changeset version",
 		"changeset:publish": "changeset publish",
-		"prepublishOnly": "node src/cli.js --debug debug && tsc types/index.d.ts --esModuleInterop",
+		"prepublishOnly": "node src/cli.js --debug debug && tsc -p ./tsconfig.prepublish.json",
 		"test": "node test/test.js",
 		"check": "tsc --noEmit --emitDeclarationOnly false",
 		"lint": "prettier --ignore-path .gitignore --ignore-path .prettierignore --cache --check .",
