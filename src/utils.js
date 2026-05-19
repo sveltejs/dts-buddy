@@ -157,7 +157,7 @@ export function get_input_files(cwd, include, exclude) {
 	const included = new Set();
 
 	for (const pattern of include) {
-		for (const file of globSync(pattern, { cwd })) {
+		for (const file of globSync(pattern, { cwd, ignore: exclude })) {
 			const resolved = path.resolve(cwd, file);
 			if (fs.statSync(resolved).isDirectory()) {
 				for (const file of globSync('**/*.{js,jsx,ts,tsx}', { cwd: resolved, ignore: exclude })) {
