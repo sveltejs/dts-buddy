@@ -1,5 +1,15 @@
 # dts-buddy changelog
 
+## 0.8.0
+
+### Minor Changes
+
+- 4496a4d: feat: support TypeScript 6
+
+### Patch Changes
+
+- 1b386d5: fix: avoid traversing directories that have been excluded
+
 ## 0.7.0
 
 ### Minor Changes
