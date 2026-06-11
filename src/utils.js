@@ -371,6 +371,13 @@ export function get_dts(file, created, resolve, options) {
 			}
 
 			const params = new Set();
+			if (ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node)) {
+				if (node.typeParameters) {
+					for (const param of node.typeParameters) {
+						params.add(param.name.getText(module.ast));
+					}
+				}
+			}
 
 			if (tsu.isNamespaceDeclaration(node)) {
 				const previous = current;
@@ -405,10 +412,6 @@ export function get_dts(file, created, resolve, options) {
 				walk(node, (node) => {
 					if (ts.isPropertySignature(node) && is_internal(node) && options.stripInternal) {
 						return false;
-					}
-
-					if (ts.isTypeParameterDeclaration(node)) {
-						params.add(node.name.getText(module.ast));
 					}
 
 					// `import('./foo').Foo` -> `Foo`
@@ -566,8 +569,6 @@ export function is_reference(node, include_declarations = false) {
 
 		if (ts.isImportTypeNode(node.parent)) return false;
 		if (ts.isPropertySignature(node.parent)) return false;
-		if (ts.isNamedTupleMember(node.parent)) return node !== node.parent.name;
-		if (ts.isTypePredicateNode(node.parent)) return node !== node.parent.parameterName;
 		if (ts.isGetAccessor(node.parent)) return false;
 		if (ts.isSetAccessor(node.parent)) return false;
 		if (ts.isParameter(node.parent)) return false;
