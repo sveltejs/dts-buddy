@@ -244,6 +244,8 @@ export async function createBundle(options) {
 			}
 		}
 
+		if (ambient_modules.size) types += '\n\n';
+
 		for (const file of ambient_modules) {
 			// clean up ambient module then inject wholesale
 			// TODO do we need sourcemaps here?
