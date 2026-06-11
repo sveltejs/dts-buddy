@@ -1,0 +1,18 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"Thing",
+		"isThing",
+		"e"
+	],
+	"sources": [
+		"../input/index.ts",
+		"../input/other.ts"
+	],
+	"sourcesContent": [
+		null,
+		null
+	],
+	"mappings": ";kBAAiBA,KAAKA;;;iBAINC,OAAOA;iBCJPC,CAACA"
+}
