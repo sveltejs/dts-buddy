@@ -244,6 +244,11 @@ export async function createBundle(options) {
 			}
 		}
 
+		// we need a new line because the ambient module JSDocs will be invalid if its
+		// multi-line comment syntax is added directly next to a closing bracket
+		// without some spacing in between
+		if (ambient_modules.size) types += '\n\n';
+
 		for (const file of ambient_modules) {
 			// clean up ambient module then inject wholesale
 			// TODO do we need sourcemaps here?

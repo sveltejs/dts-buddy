@@ -1,5 +1,12 @@
 # dts-buddy changelog
 
+## 0.8.1
+
+### Patch Changes
+
+- 2663d64: fix: avoid renaming types matching generic or predicate names
+- b0a3636: fix: correctly display JSDoc for the first ambient module if any
+
 ## 0.8.0
 
 ### Minor Changes
