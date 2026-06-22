@@ -403,7 +403,7 @@ export function get_dts(file, created, resolve, options) {
 				current = previous;
 			} else {
 				walk(node, (node) => {
-					if (ts.isPropertySignature(node) && is_internal(node) && options.stripInternal) {
+					if (options.stripInternal && is_internal(node) && is_property(node)) {
 						return false;
 					}
 
@@ -595,6 +595,15 @@ export function is_reference(node, include_declarations = false) {
 	}
 
 	return true;
+}
+
+/** @param {ts.Node} node */
+export function is_property(node) {
+	if (ts.isPropertySignature(node)) return true;
+	if (ts.isPropertyDeclaration(node)) return true;
+	if (ts.isGetAccessorDeclaration(node)) return true;
+	if (ts.isSetAccessorDeclaration(node)) return true;
+	return false;
 }
 
 /**
