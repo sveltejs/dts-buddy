@@ -1,5 +1,32 @@
 # dts-buddy changelog
 
+## 0.8.1
+
+### Patch Changes
+
+- 2663d64: fix: avoid renaming types matching generic or predicate names
+- b0a3636: fix: correctly display JSDoc for the first ambient module if any
+
+## 0.8.0
+
+### Minor Changes
+
+- 4496a4d: feat: support TypeScript 6
+
+### Patch Changes
+
+- 1b386d5: fix: avoid traversing directories that have been excluded
+
+## 0.7.0
+
+### Minor Changes
+
+- 743b38d: feat: TypeScript 5.9 support
+
+### Patch Changes
+
+- 8dafc02: chore: update package URL
+
 ## 0.6.2
 
 ### Patch Changes

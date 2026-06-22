@@ -35,9 +35,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [20, 22]
+        node: [20, 22, 24]
         os: [ubuntu-latest]
-        typescript: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8']
+        typescript: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8', '5.9', '6.0']
         include:
           - node: 18
             os: ubuntu-latest
@@ -45,9 +45,9 @@ jobs:
           - node: 18
             os: windows-latest
             typescript: '5.0'
-          - node: 22
+          - node: 24
             os: windows-latest
-            typescript: '5.7'
+            typescript: '6.0'
     steps:
       - run: git config --global core.autocrlf false
       - uses: actions/checkout@v4

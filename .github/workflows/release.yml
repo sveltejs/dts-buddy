@@ -9,7 +9,7 @@ permissions: {}
 jobs:
   release:
     # prevents this action from running on forks
-    if: github.repository == 'Rich-Harris/dts-buddy'
+    if: github.repository == 'sveltejs/dts-buddy'
     permissions:
       contents: write # to create release (changesets/action)
       id-token: write # OpenID Connect token needed for provenance
@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 24.x
           cache: pnpm
 
       - name: Install
@@ -41,4 +41,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

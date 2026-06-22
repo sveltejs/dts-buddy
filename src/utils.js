@@ -157,7 +157,7 @@ export function get_input_files(cwd, include, exclude) {
 	const included = new Set();
 
 	for (const pattern of include) {
-		for (const file of globSync(pattern, { cwd })) {
+		for (const file of globSync(pattern, { cwd, ignore: exclude })) {
 			const resolved = path.resolve(cwd, file);
 			if (fs.statSync(resolved).isDirectory()) {
 				for (const file of globSync('**/*.{js,jsx,ts,tsx}', { cwd: resolved, ignore: exclude })) {
@@ -371,13 +371,6 @@ export function get_dts(file, created, resolve, options) {
 			}
 
 			const params = new Set();
-			if (ts.isInterfaceDeclaration(node) || ts.isTypeAliasDeclaration(node)) {
-				if (node.typeParameters) {
-					for (const param of node.typeParameters) {
-						params.add(param.name.getText(module.ast));
-					}
-				}
-			}
 
 			if (tsu.isNamespaceDeclaration(node)) {
 				const previous = current;
@@ -410,8 +403,12 @@ export function get_dts(file, created, resolve, options) {
 				current = previous;
 			} else {
 				walk(node, (node) => {
-					if (ts.isPropertySignature(node) && is_internal(node) && options.stripInternal) {
+					if (options.stripInternal && is_internal(node) && is_property(node)) {
 						return false;
+					}
+
+					if (ts.isTypeParameterDeclaration(node)) {
+						params.add(node.name.getText(module.ast));
 					}
 
 					// `import('./foo').Foo` -> `Foo`
@@ -571,6 +568,8 @@ export function is_reference(node, include_declarations = false) {
 
 		if (ts.isImportTypeNode(node.parent)) return false;
 		if (ts.isPropertySignature(node.parent)) return false;
+		if (ts.isNamedTupleMember(node.parent)) return node !== node.parent.name;
+		if (ts.isTypePredicateNode(node.parent)) return node !== node.parent.parameterName;
 		if (ts.isGetAccessor(node.parent)) return false;
 		if (ts.isSetAccessor(node.parent)) return false;
 		if (ts.isParameter(node.parent)) return false;
@@ -598,6 +597,15 @@ export function is_reference(node, include_declarations = false) {
 	}
 
 	return true;
+}
+
+/** @param {ts.Node} node */
+export function is_property(node) {
+	if (ts.isPropertySignature(node)) return true;
+	if (ts.isPropertyDeclaration(node)) return true;
+	if (ts.isGetAccessorDeclaration(node)) return true;
+	if (ts.isSetAccessorDeclaration(node)) return true;
+	return false;
 }
 
 /**

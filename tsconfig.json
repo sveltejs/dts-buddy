@@ -7,11 +7,10 @@
 		"declarationMap": true,
 		"emitDeclarationOnly": true,
 		"noUnusedLocals": true,
-		"module": "esnext",
 		"target": "esnext",
 		"moduleResolution": "bundler",
 		"skipLibCheck": true,
-		"strict": true
+		"types": ["node"]
 	},
 	"include": ["src", "scripts", "test/test.js"]
 }
