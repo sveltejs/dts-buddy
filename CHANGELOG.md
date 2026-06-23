@@ -1,5 +1,11 @@
 # dts-buddy changelog
 
+## 0.8.2
+
+### Patch Changes
+
+- 5226aeb: fix: exclude class properties marked as `@internal` (.js files)
+
 ## 0.8.1
 
 ### Patch Changes
