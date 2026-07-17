@@ -1,5 +1,11 @@
 # dts-buddy changelog
 
+## 0.8.3
+
+### Patch Changes
+
+- 6068bea: fix: strip internal functions
+
 ## 0.8.2
 
 ### Patch Changes
