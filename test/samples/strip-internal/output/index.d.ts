@@ -4,6 +4,7 @@ declare module 'strip-internal' {
 		bar: string;
 		constructor();
 	}
+	export function visible(): void;
 	export interface Foo {
 		bar: string;
 	}

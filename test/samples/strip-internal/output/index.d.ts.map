@@ -3,6 +3,7 @@
 	"file": "index.d.ts",
 	"names": [
 		"FooBar",
+		"visible",
 		"Foo"
 	],
 	"sources": [
@@ -13,5 +14,5 @@
 		null,
 		null
 	],
-	"mappings": ";cAOaA,MAAMA;;;;;kBCLFC,GAAGA"
+	"mappings": ";cAOaA,MAAMA;;;;;iBAmCHC,OAAOA;kBCxCNC,GAAGA"
 }

@@ -34,3 +34,12 @@ export class FooBar {
 		this._ = b;
 	}
 }
+
+/**
+ * @internal
+ */
+export function hidden() {}
+
+export function visible() {
+	hidden();
+}

@@ -286,6 +286,7 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 
 				if (is_internal(node) && options.stripInternal) {
 					result.remove(node.pos, node.end);
+					return;
 				}
 
 				const identifier = /** @type {ts.DeclarationName} */ (
