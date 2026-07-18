@@ -2,7 +2,7 @@ export { foo_nested } from './nested/file.js';
 
 /**
  * @param {import('#lib').Input} input
- * @returns {import('#lib').Output}
+ * @returns {import('@/lib').Output}
  */
 export function foo(input) {
 	return input * 2;
