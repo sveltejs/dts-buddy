@@ -1,0 +1,18 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"Foo",
+		"Bar",
+		"makeBar"
+	],
+	"sources": [
+		"../input/shared/types.ts",
+		"../input/subpkg-c/index.ts"
+	],
+	"sourcesContent": [
+		null,
+		null
+	],
+	"mappings": ";cAAaA,GAAGA;;;;;;;;;cAOHC,GAAGA;;;;;;;;;;iBCLAC,OAAOA"
+}

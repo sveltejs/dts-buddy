@@ -1,0 +1,19 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"Foo",
+		"Bar",
+		"takeFoo",
+		"makeBar"
+	],
+	"sources": [
+		"../input/shared/foo.js",
+		"../input/subpackage/index.js"
+	],
+	"sourcesContent": [
+		null,
+		null
+	],
+	"mappings": ";cAAaA,GAAGA;;;;;;cAcHC,GAAGA;;;;;;;;;;;;;;iBCXAC,OAAOA;;iBAOPC,OAAOA"
+}

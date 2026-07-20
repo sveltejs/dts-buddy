@@ -8,6 +8,7 @@ interface Reference {
 }
 
 interface Declaration {
+	key: string;
 	module: string;
 	name: string;
 	alias: string;
@@ -62,6 +63,8 @@ interface Module {
 
 	/** A map of <exported, local> exports */
 	exports: Map<string, string>;
+
+	type_exports: Set<string>;
 }
 
 interface Namespace {

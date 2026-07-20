@@ -1,0 +1,22 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"Foo",
+		"Bar",
+		"Box",
+		"makeFoo",
+		"wrapBar",
+		"takeBox",
+		"makeQuux"
+	],
+	"sources": [
+		"../input/shared/types.ts",
+		"../input/subpkg-b/index.ts"
+	],
+	"sourcesContent": [
+		null,
+		null
+	],
+	"mappings": ";cAAaA,GAAGA;;;;cAOHC,GAAGA;;;;;;;;cAcHC,GAAGA;;;;;;;;;;;;;;;iBCnBAC,OAAOA;iBAQPC,OAAOA;iBAQPC,OAAOA;iBAQPC,QAAQA"
+}

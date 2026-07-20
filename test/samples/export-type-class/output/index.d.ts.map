@@ -1,0 +1,15 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"Foo",
+		"foo"
+	],
+	"sources": [
+		"../input/internal.ts"
+	],
+	"sourcesContent": [
+		null
+	],
+	"mappings": ";;OAAaA,GAAGA;;;;iBAQAC,GAAGA"
+}

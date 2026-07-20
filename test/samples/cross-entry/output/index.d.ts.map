@@ -1,0 +1,21 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"makeFoo",
+		"Foo",
+		"takeFoo",
+		"moreFoo"
+	],
+	"sources": [
+		"../input/subpkg-a/foo.js",
+		"../input/subpkg-b/index.js",
+		"../input/subpkg-c/index.js"
+	],
+	"sourcesContent": [
+		null,
+		null,
+		null
+	],
+	"mappings": ";iBAegBA,OAAOA;cAfVC,GAAGA;;;;;;;;;;;;;iBCGAC,OAAOA;;;;;;;;;iBCCPC,OAAOA"
+}

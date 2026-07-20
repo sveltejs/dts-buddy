@@ -207,6 +207,7 @@ export function get_dts(file, created, resolve, options) {
 		declarations: new Map(),
 		imports: new Map(),
 		exports: new Map(),
+		type_exports: new Set(),
 		export_from: new Map(),
 		import_all: new Map(),
 		export_all: [],
@@ -299,6 +300,10 @@ export function get_dts(file, created, resolve, options) {
 									external,
 									name: local
 								});
+
+								if (node.isTypeOnly || specifier.isTypeOnly) {
+									module.type_exports.add(name);
+								}
 							});
 						}
 					} else {
@@ -324,6 +329,10 @@ export function get_dts(file, created, resolve, options) {
 								: name;
 
 							module.exports.set(name, local);
+
+							if (node.isTypeOnly || specifier.isTypeOnly) {
+								module.type_exports.add(name);
+							}
 						});
 					}
 				}
@@ -349,6 +358,7 @@ export function get_dts(file, created, resolve, options) {
 			const existing = current.declarations.get(name);
 			if (!existing) {
 				current.declarations.set(name, {
+					key: `${file}\0${name}`,
 					module: file,
 					name,
 					alias: '',
