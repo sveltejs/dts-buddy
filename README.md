@@ -96,6 +96,18 @@ await createBundle({
 
 Note that the result will also be treeshaken — your .d.ts bundle will only include public types.
 
+A type that a public signature references but that isn't exported from the module's entry point is included in the bundle without an `export`, so users can't import it. `createBundle` returns these per module, which lets you fail the build when one slips in unintentionally:
+
+```js
+const { unexported } = await createBundle({ ... });
+
+for (const [id, declarations] of Object.entries(unexported)) {
+  for (const { name, file } of declarations) {
+    console.error(`${name} (${file}) is used by '${id}' but not exported from it`);
+  }
+}
+```
+
 ## Any other benefits over using `tsc`?
 
 In large codebases, it's convenient to use the `"paths"` option in your `tsconfig.json` so that you can do things like this...

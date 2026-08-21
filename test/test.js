@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { globSync } from 'tinyglobby';
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
@@ -40,7 +41,7 @@ for (const sample of fs.readdirSync('test/samples')) {
 		fs.rmSync(`${dir}/actual`, { recursive: true, force: true });
 		fs.rmSync(`${dir}/debug`, { recursive: true, force: true });
 
-		await createBundle({
+		const result = await createBundle({
 			project: 'test/tsconfig.json',
 			modules,
 			output: `${dir}/actual/index.d.ts`,
@@ -60,6 +61,21 @@ for (const sample of fs.readdirSync('test/samples')) {
 				output_dir = candidate;
 				break;
 			}
+		}
+
+		if (fs.existsSync(`${dir}/unexported.json`)) {
+			const expected = JSON.parse(fs.readFileSync(`${dir}/unexported.json`, 'utf-8'));
+			const unexported = Object.fromEntries(
+				Object.entries(result.unexported).map(([id, declarations]) => [
+					id,
+					declarations.map(({ name, file }) => ({
+						name,
+						file: path.relative(dir, file).replace(/\\/g, '/')
+					}))
+				])
+			);
+
+			assert.equal(unexported, expected);
 		}
 
 		const actual = globSync('**', { cwd: `${dir}/actual`, onlyFiles: true }).sort();

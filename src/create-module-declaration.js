@@ -24,6 +24,7 @@ import {
  *   content: string;
  *   mappings: Map<string, Mapping>;
  *   ambient: ModuleReference[];
+ *   unexported: Array<{ name: string, file: string }>;
  * }}
  */
 export function create_module_declaration(id, entry, created, resolve, options) {
@@ -34,6 +35,9 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 
 	/** @type {ModuleReference[]} */
 	const ambient = [];
+
+	/** @type {Array<{ name: string, file: string }>} */
+	const unexported = [];
 
 	/** @type {Record<string, Record<string, Declaration>>} */
 	const external_imports = {};
@@ -145,6 +149,9 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 		/** @type {Set<Declaration>} */
 		const declarations = new Set();
 
+		/** @type {Set<Declaration>} */
+		const exported = new Set();
+
 		/** @param {string} name */
 		function get_name(name) {
 			let i = 1;
@@ -176,6 +183,7 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 			if (declaration) {
 				declaration.alias = get_name(reserved.has(name) ? declaration.name : name);
 				mark(declaration);
+				exported.add(declaration);
 
 				if (name === 'default') {
 					declaration.default = true;
@@ -193,6 +201,10 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 		for (const declaration of declarations) {
 			if (!declaration.alias) {
 				declaration.alias = get_name(declaration.preferred_alias || declaration.name);
+			}
+
+			if (!exported.has(declaration) && !declaration.external) {
+				unexported.push({ name: declaration.name, file: declaration.module });
 			}
 		}
 	}
@@ -542,7 +554,8 @@ export function create_module_declaration(id, entry, created, resolve, options) 
 	return {
 		content,
 		mappings,
-		ambient
+		ambient,
+		unexported
 	};
 }
 

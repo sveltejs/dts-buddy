@@ -1,0 +1,19 @@
+{
+	"version": 3,
+	"file": "index.d.ts",
+	"names": [
+		"run",
+		"Options",
+		"Result",
+		"Helper"
+	],
+	"sources": [
+		"../input/index.ts",
+		"../input/internal.d.ts"
+	],
+	"sourcesContent": [
+		null,
+		null
+	],
+	"mappings": ";iBAEgBA,GAAGA;WCFFC,OAAOA;;;;WAIPC,MAAMA;;;;aAIXC,MAAMA"
+}
