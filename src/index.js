@@ -26,9 +26,14 @@ import { create_module_declaration } from './create-module-declaration.js';
  *   exclude?: string[];
  *   debug?: string;
  * }} options
- * @returns {Promise<void>}
+ * @returns {Promise<{ unexported: Record<string, Array<{ name: string, file: string }>> }>}
+ * `unexported` lists, per module, the declarations that were included in the bundle because a public
+ * signature references them, but are not exported from the module's entry point and so cannot be imported by users
  */
 export async function createBundle(options) {
+	/** @type {Record<string, Array<{ name: string, file: string }>>} */
+	const unexported = {};
+
 	const project = options.project ?? 'tsconfig.json';
 	const output = path.resolve(options.output);
 	const debug = options.debug && path.resolve(options.debug);
@@ -225,16 +230,16 @@ export async function createBundle(options) {
 			if (!first) types += '\n\n';
 			first = false;
 
-			const { content, mappings, ambient } = create_module_declaration(
-				id,
-				modules[id],
-				created,
-				resolve,
-				compilerOptions
-			);
+			const {
+				content,
+				mappings,
+				ambient,
+				unexported: module_unexported
+			} = create_module_declaration(id, modules[id], created, resolve, compilerOptions);
 
 			types += content;
 			all_mappings.set(id, mappings);
+			unexported[id] = module_unexported;
 			for (const dep of ambient) {
 				if (dep.external) {
 					external_ambient_modules.add(dep.id);
@@ -357,4 +362,6 @@ export async function createBundle(options) {
 	} finally {
 		process.chdir(original_cwd);
 	}
+
+	return { unexported };
 }

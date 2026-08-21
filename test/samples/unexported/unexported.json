@@ -1,0 +1,6 @@
+{
+	"unexported": [
+		{ "name": "Options", "file": "input/internal.d.ts" },
+		{ "name": "Result", "file": "input/internal.d.ts" }
+	]
+}
